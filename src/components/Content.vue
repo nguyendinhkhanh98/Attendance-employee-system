@@ -129,7 +129,7 @@
 
 <script>
 import Navigation from "../components/Navigation";
-import HeaderTableContent from "../components/HeaderTableContent";
+// import HeaderTableContent from "../components/HeaderTableContent";
 // import FooterTableContent from "../components/FooterTableContent";
 
 const _ = require('lodash');
@@ -138,7 +138,7 @@ export default {
   name: 'Content',
   components: {
     Navigation,
-    HeaderTableContent,
+    // HeaderTableContent,
     // FooterTableContent,
   },
   data() {
@@ -277,6 +277,7 @@ export default {
 </script>
 
 <style scoped>
+/* Table */
 .container__content {
   display: flex;
   overflow-x: auto;
@@ -293,12 +294,51 @@ export default {
   display: inline-block;
   margin-left: 12px;
 }
-/* .table-item {
-  position: relative
+/* Modified */
+.is-disabled {
+  background-color: rgb(76, 101, 240);
 }
-.table-item i{
-  position: absolute;
-  right: 6px;
-  top: 18px;
-} */
+
+/* Header Table Content */
+.table-content__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px;
+}
+
+.table-content__select {
+  display: flex;
+  align-items: center;
+}
+.table-content__select-label {
+  color: #000;
+  font-size: 16px;
+  margin: 0 0 0 8px;
+}
+.table-content__select-page {
+  width: 80px;
+}
+
+select.form-control:not([size]):not([multiple]) {
+  height: 32px !important;
+}
+
+.table-content__search-label {
+  margin-right: 8px;
+}
+.table-content__search-input {
+  border-radius: 3px;
+  height: 30px;
+}
+
+/* Footer Table Content */
+.footer-table-content {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 16px;
+}
+.footer-table-content__label {
+  font-size: 16px;
+}
 </style>
