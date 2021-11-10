@@ -2,7 +2,44 @@
   <div class="container__content">
     <Navigation />
     <div class="container__table">
-      <HeaderTableContent class="table__header" />
+      <div class="table-content__header">
+        <div class="form-group table-content__select">
+          <select
+            class="form-control table-content__select-page"
+            id="table-content__select-id"
+            name="action"
+            v-model="selected"
+            v-on:change="countPerPages(count)"
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <label for="table-content__select-id" class="table-content__select-label">Record per page: {{selected}}</label>
+        </div>
+        <div class="table-content__search">
+          <label
+            for="table-content__search-input"
+            class="table-content__search-label"
+            >Search:</label
+          >
+          <input
+            type="text"
+            id="table-content__search-input"
+            class="table-content__search-input"
+            placeholder="Find user"
+            v-model="searchItem"
+            v-on:keyup="searchInTheList(searchItem)"
+          />
+        </div>
+      </div>
       <table class="table table-bordered table__employee-detail">
         <thead>
           <tr>

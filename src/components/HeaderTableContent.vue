@@ -19,7 +19,7 @@
         <option value="9">9</option>
         <option value="10">10</option>
       </select>
-      <label for="table-content__select-id" class="table-content__select-label">Record per pahe: {{selected}}</label>
+      <label for="table-content__select-id" class="table-content__select-label">Record per page: {{selected}}</label>
     </div>
     <div class="table-content__search">
       <label
