@@ -8,8 +8,6 @@
             class="form-control table-content__select-page"
             id="table-content__select-id"
             name="action"
-            v-model="selected"
-            v-on:change="countPerPages(count)"
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -22,7 +20,7 @@
             <option value="9">9</option>
             <option value="10">10</option>
           </select>
-          <label for="table-content__select-id" class="table-content__select-label">Record per page: {{selected}}</label>
+          <label for="table-content__select-id" class="table-content__select-label">Record per page: 3</label>
         </div>
         <div class="table-content__search">
           <label
@@ -34,7 +32,6 @@
             type="text"
             id="table-content__search-input"
             class="table-content__search-input"
-            placeholder="Find user"
             v-model="searchItem"
             v-on:keyup="searchInTheList(searchItem)"
           />
@@ -89,40 +86,36 @@
           </tr>
         </tbody>
       </table>
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item">
-            <button
-              type="button"
-              class="page-link"
-              @click="selectPage(this.pagination.currentPage - 1)"
-              v-bind:class="{'is-disabled': this.pagination.currentPage === this.pagination.item[0] || this.pagination.items.length === 0}"
+      <div class="footer-table-content">
+        <span class="footer-table-content__label">Showing 41 to 46 entires</span>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link"
+                @click="selectPage(pagination.currentPage - 1)">
+                Previous
+              </a>
+            </li>
+            <li class="page-item"
+              v-for="item in pagination.items"
+              v-bind:key="item"
             >
-              Previous
-            </button>
-          </li>
-          <li class="page-item" v-for="(item, index) in pagination.filteredItems" v-bind:key="index">
-            <button
-              type="button"
-              class="page-link"
-              @click="selectPage(item)"
-              v-bind:class="{'is-info': item === pagination.currentPage}"
-            >
-              {{item}}
-            </button>
-          </li>
-          <li class="page-item">
-            <button
-              type="button"
-              class="page-link"
-              @click="selectPage(this.pagination.currentPage + 1)"
-              v-bind:class="{'is-disabled': this.pagination.currentPage === this.pagination.items[this.pagination.item.length-1] || this.pagination.items.length === 0}"
-            >
-              Next
-            </button>
-          </li>
-        </ul>
-      </nav>
+              <a class="page-link" 
+                  v-on:click="selectPage(item)"
+                  v-bind:class="{'is-info': item === pagination.currentPage}"
+              >
+                {{item}}
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link"
+                @click="selectPage(pagination.currentPage + 1)">
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </template>
@@ -152,6 +145,7 @@ export default {
         inTime: null, 
         outTime: null,
         salary: 100,
+        selected: false,
       },
       {
         id: 1,
@@ -161,6 +155,7 @@ export default {
         inTime: null, 
         outTime: null,
         salary: 100,
+        selected: false,
       },
       {
         id: 1,
@@ -170,6 +165,47 @@ export default {
         inTime: null, 
         outTime: null,
         salary: 100,
+        selected: false,
+      },
+      {
+        id: 1,
+        employeeName: 'khanh',
+        username: 'khanh',
+        password: 123,
+        inTime: null, 
+        outTime: null,
+        salary: 100,
+        selected: false,
+      },
+      {
+        id: 1,
+        employeeName: 'khanh',
+        username: 'khanh',
+        password: 123,
+        inTime: null, 
+        outTime: null,
+        salary: 100,
+        selected: false,
+      },
+      {
+        id: 1,
+        employeeName: 'khanh',
+        username: 'khanh',
+        password: 123,
+        inTime: null, 
+        outTime: null,
+        salary: 100,
+        selected: false,
+      },
+      {
+        id: 1,
+        employeeName: 'khanh',
+        username: 'khanh',
+        password: 123,
+        inTime: null, 
+        outTime: null,
+        salary: 100,
+        selected: false,
       }
       ],
       filteredItems: [],
@@ -177,8 +213,8 @@ export default {
       selectedItems: [],
       pagination: {
         range: 5,
-        currnetPage: 1,
-        itemPerPage: 8,
+        curentPage: 1,
+        itemPerPage: 3,
         items: [],
         filteredItems: [],
       }
@@ -203,7 +239,7 @@ export default {
       }
       else{
         this.filteredItems = _.filter(this.items, function(v){
-          return !v.selected && v.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1
+          return !v.selected && v.employeeName.toLowerCase().indexOf(searchText.toLowerCase()) > -1
         })
       }
       this.filteredItems.forEach(function(v, k){
@@ -228,11 +264,11 @@ export default {
     },
 
     selectPage(item) {
-      this.pagination.currnetPage = item 
+      this.pagination.currentPage = item 
 
       let start = 0
       let end = 0
-      if(this.pagination.currnetPage < this.pagination.range - 2) {
+      if(this.pagination.curentPage < this.pagination.range - 2) {
         start = 1
         end = start + this.pagination.range - 1
       }
@@ -255,7 +291,8 @@ export default {
 
       this.pagination.filteredItems = []
       for(var i = start; i <= end; i++) {
-        this.pagination.filteredItems.push(i)
+        console.log(i)
+        this.pagination.filteredItems.push(i+1)
       }
       this.paginatedItems = this.filteredItems.filter((v, k) => {
         return Math.ceil((k+1) / this.pagination.itemPerPage) === this.pagination.currentPage
@@ -286,6 +323,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin: 8px 16px 0 16px;
 }
 .table__employee-detail {
   overflow-x: auto;
@@ -295,7 +333,7 @@ export default {
   margin-left: 12px;
 }
 /* Modified */
-.is-disabled {
+.is-info {
   background-color: rgb(76, 101, 240);
 }
 
@@ -304,7 +342,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 12px;
+  margin: 0;
 }
 
 .table-content__select {
@@ -328,8 +366,13 @@ select.form-control:not([size]):not([multiple]) {
   margin-right: 8px;
 }
 .table-content__search-input {
+  text-indent: 10px;
+  border: 1px solid #7c7b7b;
   border-radius: 3px;
   height: 30px;
+}
+.table-content__search-input:focus {
+  outline: none;
 }
 
 /* Footer Table Content */

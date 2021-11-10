@@ -24,8 +24,8 @@
         <div class="col-b">
           <ul>
             <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-            <router-link class="link" :to="{}">Blogs</router-link>
-            <router-link class="link" :to="{}">Create Post</router-link>
+            <router-link class="link" :to="{}">ABC</router-link>
+            <router-link class="link" :to="{}">ABC</router-link>
             <router-link class="link" :to="{ name: 'Login' }"
               >Login In / Register</router-link
             >
@@ -59,7 +59,7 @@ export default {
 <style scoped>
 .footer {
   margin-top: auto;
-  padding: 100px 25px;
+  padding: 38px 28px;
   background-color: #303030;
 }
 .container {

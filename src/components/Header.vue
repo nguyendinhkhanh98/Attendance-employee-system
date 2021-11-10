@@ -7,8 +7,8 @@
       <div class="nav-links">
         <ul v-show="!mobile">
           <router-link class="link" :to="{}">Home</router-link>
-          <router-link class="link" :to="{}">Blogs</router-link>
-          <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link
+          <router-link class="link" :to="{}">ABC</router-link>
+          <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">ABC</router-link
           >
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link
           >
@@ -59,7 +59,7 @@
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-        <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
+        <router-link class="link" :to="{ name: 'Blogs' }">ABC</router-link>
         <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }"
           >Create Post</router-link
         >
@@ -119,11 +119,8 @@ export default {
   margin-right: 0;
 }
 
-.link:hover {
+.wrap .link:hover {
   color: #1eb8b8;
-}
-body> div > a:hover {
-  background-color: none;
   text-decoration: none;
 }
 

@@ -40,27 +40,29 @@ export default {
 <style>
 /* Style the navigation bar */
 .navbar__wrap {
-  width: 20%;
+  width: 15%;
   height: 800px;
-  background-color: #000;
+  background-color: white;
+  border: 1px solid #ccc
 }
 .navbar__wrap .nav-link {
   display: flex;
-  padding: 24px 36px 6px 6px;
+  padding: 28px 36px 6px 6px;
   text-decoration: none;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid #ccc;
   position: relative;
 }
 .navbar__wrap .nav-link i {
   font-size: 28px;
   margin-right: 8px;
-  color: white;
+  color: rgb(22, 22, 22);
 }
 
 .navbar__wrap .nav-link a {
   text-decoration: none;
-  color: white;
-  font-size: 16px;
+  color: rgb(22, 22, 22);
+  font-size: 18px;
+  font-weight: 500;
   display: inline-block;
   align-self: flex-end;
   position: absolute;
@@ -70,7 +72,7 @@ export default {
 
 /* Navbar links on mouse-over */
 .navbar__wrap .nav-link a:hover {
-  background-color: #000;
+  color: #78b43d;
 }
 
 /* Current/active navbar link */

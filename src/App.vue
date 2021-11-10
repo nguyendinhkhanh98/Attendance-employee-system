@@ -38,6 +38,8 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  max-width: 1400px;
+  margin: auto;
 }
 
 .container {
