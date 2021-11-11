@@ -166,7 +166,7 @@ export default new Vuex.Store({
     selectedItems: [],
     pagination: {
       range: 5,
-      currentPage: 1,
+      currentPage: 2,
       itemPerPage: 3,
       items: [],
       filteredItems: [],
@@ -176,7 +176,7 @@ export default new Vuex.Store({
     
   },
   mutations: {
-    FILTERED_ITEM({ state }, searchText) {
+    FILTERED_ITEM(state , searchText) {
       if (_.isUndefined(searchText)) {
         state.filteredItems = _.filter(state.items, function (v) {
           return !v.selected;
@@ -193,13 +193,13 @@ export default new Vuex.Store({
         v.key = k + 1;
       });
     },
-    BUILD_PAGINATION({state}, numberOfPage) {
+    BUILD_PAGINATION(state, numberOfPage) {
       state.pagination.items = [];
       for (var i = 0; i < numberOfPage; i++) {
         state.pagination.items.push(i + 1);
       }
     }, 
-    SELECT_PAGE({ state }, start, end) {
+    SELECT_PAGE(state, start, end) {
       state.pagination.filteredItems = [];
       for (var i = start; i <= end; i++) {
         state.pagination.filteredItems.push(i);
@@ -211,10 +211,18 @@ export default new Vuex.Store({
         );
       });
     },
-    SET_CURRENT_PAGE({ state }, item) {
+    SET_CURRENT_PAGE(state , item) {
       state.pagination.currentPage = item;
+    },
+    SET_SELECTED_ITEMS_TRUE(state, item) {
+      state.selectedItems.push(item)
+    },
+    SET_SELECTED_ITEMS_FALSE(state, item) {
+      state.selectedItems.push(item)
+    },
+    SET_FILTERED_ITEMS(state) {
+      state.filteredItems = state.items;
     }
-
   },
   actions: {
     clearSearchItem({state, dispatch}) {
@@ -223,7 +231,7 @@ export default new Vuex.Store({
       dispatch("searchInTheList");
     },
 
-    searchInTheList({ state, commit,  dispatch }, searchText, currentPage) {
+    searchInTheList({ state, commit, dispatch }, searchText, currentPage) {
       // if (_.isUndefined(searchText)) {
       //   state.filteredItems = _.filter(state.items, function (v) {
       //     return !v.selected;
@@ -239,7 +247,7 @@ export default new Vuex.Store({
       // state.filteredItems.forEach(function (v, k) {
       //   v.key = k + 1;
       // });
-      commit("FILTER_ITEM", searchText)
+      commit("FILTERED_ITEM", searchText)
       // this.buildPagination();
       dispatch("buildPagination");
 
@@ -301,16 +309,18 @@ export default new Vuex.Store({
       commit("SELECT_PAGE", start, end)
     },
 
-    selectItem( { state, dispatch } , item) {
+    selectItem( { state, commit, dispatch } , item) {
       item.selected = true;
-      state.selectedItems.push(item);
+      // state.selectedItems.push(item);
+      commit("SET_SELECTED_ITEMS_TRUE", item)
       // this.searchInTheList(this.searchItem, this.pagination.currentPage);
       dispatch("searchInTheList", state.searchItem, state.pagination.currentPage)
     },
 
-    removeSelectedItem( { state, dispatch } , item) {
+    removeSelectedItem( { state, commit, dispatch } , item) {
       item.selected = false;
-      state.selectedItems.$remove(item);
+      // state.selectedItems.$remove(item);
+      commit("SET_SELECTED_ITEMS_FALSE", item)
       // this.searchInTheList(this.searchItem, this.pagination.currentPage);
       dispatch("searchInTheList", state.searchItem, state.pagination.currentPage)
     },

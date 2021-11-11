@@ -222,10 +222,14 @@ export default {
       pagination: this.$store.state.pagination,
     };
   },
+  computed: {
+    
+  },
   created() {
-    this.filteredItems = this.items;
-    this.buildPagination;
-    this.selectPage(1);
+    // this.filteredItems = this.items.concat([]);
+    this.commit("SET_FILTERED_ITEMS");
+    this.buildPagination();
+    this.selectPage(2);
   },
   methods: {
     clearSearchItem() {
