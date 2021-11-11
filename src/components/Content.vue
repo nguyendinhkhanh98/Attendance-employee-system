@@ -8,19 +8,21 @@
             class="form-control table-content__select-page"
             id="table-content__select-id"
             name="action"
+            v-model="pagination.itemPerPage"
           >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
+            <option
+              v-for="optionItem in optionItems"
+              v-bind:key="optionItem"
+              v-bind:value="optionItem"
+            >
+              {{ optionItem }}
+            </option>
           </select>
-          <label for="table-content__select-id" class="table-content__select-label">Record per page: 3</label>
+          <label
+            for="table-content__select-id"
+            class="table-content__select-label"
+            >Record per page: {{ pagination.itemPerPage }}</label
+          >
         </div>
         <div class="table-content__search">
           <label
@@ -37,7 +39,7 @@
           />
         </div>
       </div>
-      <table class="table table-bordered table__employee-detail">
+      <table id="dtBasicExample" class="table table-bordered table__employee-detail">
         <thead>
           <tr>
             <th scope="col" class="table-item">ID</th>
@@ -67,16 +69,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in paginatedItems"
-              v-bind:key="index">
-            <th scope="row">{{item.id}}</th>
-            <td>{{item.employeeName}}</td>
-            <td>{{item.username}}</td>
-            <td>{{item.password}}</td>
-            <td>{{item.inTime}}</td>
-            <td>{{item.outTime}}</td>
-            <td>{{item.salary}}</td>
-            <td><button type="button" class="btn btn-primary">Edit</button></td>
+          <tr v-for="(item, index) in paginatedItems" v-bind:key="index">
+            <th scope="row">{{ item.id }}</th>
+            <td>{{ item.employeeName }}</td>
+            <td>{{ item.username }}</td>
+            <td>{{ item.password }}</td>
+            <td>{{ item.inTime }}</td>
+            <td>{{ item.outTime }}</td>
+            <td>{{ item.salary }}</td>
+            <td>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFormEdit">Edit</button>
+            </td>
             <td>
               <button type="button" class="btn btn-danger">Delete</button>
             </td>
@@ -87,29 +90,42 @@
         </tbody>
       </table>
       <div class="footer-table-content">
-        <span class="footer-table-content__label">Showing 41 to 46 entires</span>
+        <span class="footer-table-content__label"
+          >Showing 41 to 46 entires</span
+        >
         <nav aria-label="Page navigation example">
           <ul class="pagination">
             <li class="page-item">
-              <a class="page-link"
-                @click="selectPage(pagination.currentPage - 1)">
+              <a
+                class="page-link"
+                @click="selectPage(pagination.currentPage - 1)"
+                v-bind:class="{
+                  disabled:
+                    this.pagination.currentPage == this.pagination.items[0] ||
+                    this.pagination.items.length === 0,
+                }"
+              >
                 Previous
               </a>
             </li>
-            <li class="page-item"
-              v-for="item in pagination.items"
+            <li
+              class="page-item"
+              v-for="item in this.pagination.filteredItems"
               v-bind:key="item"
             >
-              <a class="page-link" 
-                  v-on:click="selectPage(item)"
-                  v-bind:class="{'is-info': item === pagination.currentPage}"
+              <a
+                class="page-link"
+                v-on:click="selectPage(item)"
+                v-bind:class="{ 'is-info': item === pagination.currentPage }"
               >
-                {{item}}
+                {{ item }}
               </a>
             </li>
             <li class="page-item">
-              <a class="page-link"
-                @click="selectPage(pagination.currentPage + 1)">
+              <a
+                class="page-link"
+                @click="selectPage(pagination.currentPage + 1)"
+              >
                 Next
               </a>
             </li>
@@ -117,6 +133,61 @@
         </nav>
       </div>
     </div>
+
+    <!-- Form edit data -->
+    <div class="modal fade modalEditClass" id="modalFormEdit" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Edit form</h4>
+            <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
+            <div class="md-form mb-5">
+              <input type="text" id="formNameEdit" class="form-control validate">
+              <label data-error="wrong" data-success="right" for="formNameEdit">Name</label>
+            </div>
+
+            <div class="md-form mb-5">
+              <input type="text" id="formPositionEdit" class="form-control validate">
+              <label data-error="wrong" data-success="right" for="formPositionEdit">Position</label>
+            </div>
+
+            <div class="md-form mb-5">
+              <input type="text" id="formOfficeEdit" class="form-control validate">
+              <label data-error="wrong" data-success="right" for="formOfficeEdit">Office</label>
+            </div>
+
+            <div class="md-form mb-5">
+              <input type="text" id="formAgeEdit" class="form-control validate">
+              <label data-error="wrong" data-success="right" for="formAgeEdit">Age</label>
+            </div>
+
+            <div class="md-form mb-5">
+              <input type="text" id="formDateEdit" class="form-control datepicker">
+              <label data-error="wrong" data-success="right" for="formDateEdit">Date</label>
+            </div>
+
+            <div class="md-form mb-5">
+              <input type="text" id="formSalaryEdit" class="form-control validate">
+              <label data-error="wrong" data-success="right" for="formSalaryEdit">Salary</label>
+            </div>
+
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center editInsideWrapper">
+            <button class="btn btn-outline-secondary btn-block editInside" data-dismiss="modal">Edit
+              form
+              <i class="fas fa-paper-plane-o ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -124,11 +195,17 @@
 import Navigation from "../components/Navigation";
 // import HeaderTableContent from "../components/HeaderTableContent";
 // import FooterTableContent from "../components/FooterTableContent";
+// import $ from "jquery";
 
-const _ = require('lodash');
+// const _ = require("lodash");
+
+// $('#dtBasicExample').mdbEditor({
+// mdbEditor: true
+// });
+// $('.dataTables_length').addClass('bs-select');
 
 export default {
-  name: 'Content',
+  name: "Content",
   components: {
     Navigation,
     // HeaderTableContent,
@@ -136,178 +213,42 @@ export default {
   },
   data() {
     return {
-      searchItem: '',
-      items: [{
-        id: 1,
-        employeeName: 'admin',
-        username: 'admin',
-        password: 'admin',
-        inTime: null, 
-        outTime: null,
-        salary: 100,
-        selected: false,
-      },
-      {
-        id: 1,
-        employeeName: 'khanh',
-        username: 'khanh',
-        password: 123,
-        inTime: null, 
-        outTime: null,
-        salary: 100,
-        selected: false,
-      },
-      {
-        id: 1,
-        employeeName: 'khanh',
-        username: 'khanh',
-        password: 123,
-        inTime: null, 
-        outTime: null,
-        salary: 100,
-        selected: false,
-      },
-      {
-        id: 1,
-        employeeName: 'khanh',
-        username: 'khanh',
-        password: 123,
-        inTime: null, 
-        outTime: null,
-        salary: 100,
-        selected: false,
-      },
-      {
-        id: 1,
-        employeeName: 'khanh',
-        username: 'khanh',
-        password: 123,
-        inTime: null, 
-        outTime: null,
-        salary: 100,
-        selected: false,
-      },
-      {
-        id: 1,
-        employeeName: 'khanh',
-        username: 'khanh',
-        password: 123,
-        inTime: null, 
-        outTime: null,
-        salary: 100,
-        selected: false,
-      },
-      {
-        id: 1,
-        employeeName: 'khanh',
-        username: 'khanh',
-        password: 123,
-        inTime: null, 
-        outTime: null,
-        salary: 100,
-        selected: false,
-      }
-      ],
-      filteredItems: [],
-      paginatedItems: [],
-      selectedItems: [],
-      pagination: {
-        range: 5,
-        curentPage: 1,
-        itemPerPage: 3,
-        items: [],
-        filteredItems: [],
-      }
-    }
+      optionItems: this.$store.state.optionItems,
+      searchItem: this.$store.state.searchItem,
+      items: this.$store.state.items,
+      filteredItems: this.$store.state.filteredItems,
+      paginatedItems: this.$store.state.paginatedItems,
+      selectedItems: this.$store.state.selectedItems,
+      pagination: this.$store.state.pagination,
+    };
   },
   created() {
-    this.filteredItems = this.items
-    this.buildPagination()
-    this.selectPage(1) 
+    this.filteredItems = this.items;
+    this.buildPagination;
+    this.selectPage(1);
   },
   methods: {
     clearSearchItem() {
-      _.isUndefined(this.searchItem);
-      this.searchInTheList('');
+      this.$store.dispatch("clearSearchItem")
     },
 
-    searchInTheList(searchText, currentPage){
-      if(_.isUndefined(searchText)){
-        this.filteredItems = _.filter(this.items, function(v){
-          return !v.selected
-        })
-      }
-      else{
-        this.filteredItems = _.filter(this.items, function(v){
-          return !v.selected && v.employeeName.toLowerCase().indexOf(searchText.toLowerCase()) > -1
-        })
-      }
-      this.filteredItems.forEach(function(v, k){
-        v.key = k+1
-      })  
-      this.buildPagination()
-      
-      if(_.isUndefined(currentPage)){
-        this.selectPage(1) 
-      }
-      else{
-        this.selectPage(currentPage)
-      }
+    searchInTheList(searchText, currentPage) {
+      this.$store.dispatch("searchIntheList",searchText, currentPage)
     },
 
     buildPagination() {
-      let numberOfPage = Math.ceil(this.filteredItems.length / this.pagination.itemPerPage)
-      this.pagination.items = []
-      for (var i = 0; i < numberOfPage; i++) {
-        this.pagination.items.push(i+1)
-      }
+      this.$store.dispatch("buildPagination")
     },
 
     selectPage(item) {
-      this.pagination.currentPage = item 
-
-      let start = 0
-      let end = 0
-      if(this.pagination.curentPage < this.pagination.range - 2) {
-        start = 1
-        end = start + this.pagination.range - 1
-      }
-      else if
-      (this.pagination.currentPage <= this.pagination.items.length && 
-       this.pagination.currentPage > this.pagination.items.length - this.pagination.range + 2) {
-        start = this.pagination.items.length - this.pagination.range + 1
-        end = this.pagination.items.length 
-      }
-      else {
-        start = this.pagination.currentPage - 2
-        end = this.pagination.currentPage + 2
-      }
-      if(start<1) {
-        start = 1
-      }
-      if(end > this.pagination.items.length) {
-        end = this.pagination.filteredItems
-      }
-
-      this.pagination.filteredItems = []
-      for(var i = start; i <= end; i++) {
-        console.log(i)
-        this.pagination.filteredItems.push(i+1)
-      }
-      this.paginatedItems = this.filteredItems.filter((v, k) => {
-        return Math.ceil((k+1) / this.pagination.itemPerPage) === this.pagination.currentPage
-      })
+      this.$store.dispatch("selectPage", item)
     },
     selectItem(item) {
-      item.selected = true;
-      this.selectedItems.push(item)
-      this.searchInTheList(this.searchItem, this.pagination.currentPage)
+      this.$store.dispatch("selectItem",item)
     },
 
     removeSelectedItem(item) {
-      item.selected = false
-      this.selectedItems.$remove(item)
-      this.searchInTheList(this.searchItem, this.pagination.currentPage)
+      this.$store.dispatch("removeSelectedItem", item)
     },
   },
 };
