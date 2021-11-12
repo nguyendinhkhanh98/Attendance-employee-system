@@ -231,10 +231,10 @@ export default {
     }
   },
   created() {
-    // this.dispatch("setFilteredItems");
+    this.dispatch("setFilteredItems");
     // this. filteredItems = this.items;
     this.buildPagination();
-    this.selectPage(2);
+    this.selectPage(1);
   },
   methods: {
     clearSearchItem() {

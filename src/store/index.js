@@ -220,17 +220,11 @@ export default new Vuex.Store({
         state.pagination.items.push(i + 1);
       }
     },
-    SELECT_PAGE(state, start, end) {
-      state.pagination.filteredItems = [];
-      for (var i = start; i <= end; i++) {
-        state.pagination.filteredItems.push(i);
-      }
-      state.paginatedItems = state.filteredItems.filter((v, k) => {
-        return (
-          Math.ceil((k + 1) / state.pagination.itemPerPage) ===
-          state.pagination.currentPage
-        );
-      });
+    SET_STATE_PAGINATION_FILTERED_ITEMS(state, payload1) {
+      state.pagination.filteredItems = payload1;
+    },
+    SET_STATE_FILTERED_ITEMS(state, payload2) {
+      state.filteredItems = payload2;
     },
     SET_CURRENT_PAGE(state, item) {
       state.pagination.currentPage = item;
@@ -271,7 +265,7 @@ export default new Vuex.Store({
       // });
       let payload;
       if (_.isUndefined(searchText)) {
-        payload = state.filteredItems = _.filter(state.items, function (v) {
+        payload = _.filter(state.items, function (v) {
           return !v.selected;
         })
       }
@@ -335,17 +329,20 @@ export default new Vuex.Store({
         end = state.pagination.filteredItems.length;
       }
 
-      // state.pagination.filteredItems = [];
-      // for (var i = start; i <= end; i++) {
-      //   state.pagination.filteredItems.push(i);
-      // }
-      // state.paginatedItems = state.filteredItems.filter((v, k) => {
-      //   return (
-      //     Math.ceil((k + 1) / state.pagination.itemPerPage) ===
-      //     state.pagination.currentPage
-      //   );
-      // });
-      commit("SELECT_PAGE", start, end)
+      let payload1 = [];
+      for (var i = start; i <= end; i++) {
+        payload1.push(i);
+      }
+      commit("SET_STATE_PAGINATION_FILTERED_ITEMS",payload1)
+      
+      let payload2; 
+      payload2 = state.filteredItems.filter((v, k) => {
+        return (
+          Math.ceil((k + 1) / state.pagination.itemPerPage) ===
+          state.pagination.currentPage
+        );
+      });
+      commit("SET_STATE_FILTERED_ITEMS", payload2)
     },
 
     setFilteredItems({ commit }) {
