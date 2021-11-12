@@ -216,18 +216,26 @@ export default {
       optionItems: this.$store.state.optionItems,
       searchItem: this.$store.state.searchItem,
       items: this.$store.state.items,
-      filteredItems: this.$store.state.filteredItems,
-      paginatedItems: this.$store.state.paginatedItems,
+      // filteredItems: this.$store.state.filteredItems,
+      // paginatedItems: this.$store.state.paginatedItems,
       selectedItems: this.$store.state.selectedItems,
       pagination: this.$store.state.pagination,
     };
   },
   computed: {
-    
+    filteredItems() {
+      return this.$store.getters.getFilteredItems
+    },
+    paginatedItems() {
+      return this.$store.getters.getPaginatedItems
+    }
+    // paginatedItems() {
+    //   return 
+    // }
   },
   created() {
     // this.filteredItems = this.items.concat([]);
-    this.commit("SET_FILTERED_ITEMS");
+    // this.dispatch("setFilteredItems");
     this.buildPagination();
     this.selectPage(2);
   },

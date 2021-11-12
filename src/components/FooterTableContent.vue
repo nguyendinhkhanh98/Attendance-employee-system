@@ -1,16 +1,47 @@
 <template>
   <div class="footer-table-content">
-    <span class="footer-table-content__label">Showing 41 to 46 entires</span>
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item active"><a class="page-link" href="#">Next</a></li>
-      </ul>
-    </nav>
-  </div>
+        <span class="footer-table-content__label"
+          >Showing 41 to 46 entires</span
+        >
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <a
+                class="page-link"
+                @click="selectPage(pagination.currentPage - 1)"
+                v-bind:class="{
+                  disabled:
+                    this.pagination.currentPage == this.pagination.items[0] ||
+                    this.pagination.items.length === 0,
+                }"
+              >
+                Previous
+              </a>
+            </li>
+            <li
+              class="page-item"
+              v-for="item in this.pagination.filteredItems"
+              v-bind:key="item"
+            >
+              <a
+                class="page-link"
+                v-on:click="selectPage(item)"
+                v-bind:class="{ 'is-info': item === pagination.currentPage }"
+              >
+                {{ item }}
+              </a>
+            </li>
+            <li class="page-item">
+              <a
+                class="page-link"
+                @click="selectPage(pagination.currentPage + 1)"
+              >
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
 </template>
 
 <script>

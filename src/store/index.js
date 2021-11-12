@@ -173,7 +173,28 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    
+    getFilteredItems: (state) => {
+      state.filteredItems = state.items
+       
+      if(_.isUndefined(state.searchItem)){
+        state.filteredItems = _.filter(state.items, function(v) {
+          return !v.selected
+        })
+        }
+      else {
+        state.filteredItems = _.filter(state.items, function(v) {
+          return (
+            !v.selected &&
+            v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
+          )
+          })
+        }
+    },
+    getPaginatedItems: (state) => {
+      state.paginatedItems = state.filteredItems.filter((v, k) => {
+        Math.ceil(k +1) / state.pagination.itemPerPage === state.pagination.currentPage
+      })
+    }
   },
   mutations: {
     FILTERED_ITEM(state , searchText) {
@@ -204,12 +225,12 @@ export default new Vuex.Store({
       for (var i = start; i <= end; i++) {
         state.pagination.filteredItems.push(i);
       }
-      state.paginatedItems = state.filteredItems.filter((v, k) => {
-        return (
-          Math.ceil((k + 1) / state.pagination.itemPerPage) ===
-          state.pagination.currentPage
-        );
-      });
+      // state.paginatedItems = state.filteredItems.filter((v, k) => {
+      //   return (
+      //     Math.ceil((k + 1) / state.pagination.itemPerPage) ===
+      //     state.pagination.currentPage
+      //   );
+      // });
     },
     SET_CURRENT_PAGE(state , item) {
       state.pagination.currentPage = item;
@@ -220,7 +241,7 @@ export default new Vuex.Store({
     SET_SELECTED_ITEMS_FALSE(state, item) {
       state.selectedItems.push(item)
     },
-    SET_FILTERED_ITEMS(state) {
+    SET_FILTEREDITEMS(state) {
       state.filteredItems = state.items;
     }
   },
@@ -308,6 +329,12 @@ export default new Vuex.Store({
       // });
       commit("SELECT_PAGE", start, end)
     },
+
+    setFilteredItems({commit}) {
+      commit("SET_FILTEREDITEMS")
+    },
+
+    
 
     selectItem( { state, commit, dispatch } , item) {
       item.selected = true;

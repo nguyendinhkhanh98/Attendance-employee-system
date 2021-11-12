@@ -1,39 +1,41 @@
 <template>
   <div class="table-content__header">
-    <div class="form-group table-content__select">
-      <select
-        class="form-control table-content__select-page"
-        id="table-content__select-id"
-        name="action"
-        v-model="selected"
-        v-on:change="countPerPages(count)"
-      >
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
-      <label for="table-content__select-id" class="table-content__select-label">Record per page: {{selected}}</label>
-    </div>
-    <div class="table-content__search">
-      <label
-        for="table-content__search-input"
-        class="table-content__search-label"
-        >Search:</label
-      >
-      <input
-        type="text"
-        id="table-content__search-input"
-        class="table-content__search-input"
-      />
-    </div>
-  </div>
+        <div class="form-group table-content__select">
+          <select
+            class="form-control table-content__select-page"
+            id="table-content__select-id"
+            name="action"
+            v-model="pagination.itemPerPage"
+          >
+            <option
+              v-for="optionItem in optionItems"
+              v-bind:key="optionItem"
+              v-bind:value="optionItem"
+            >
+              {{ optionItem }}
+            </option>
+          </select>
+          <label
+            for="table-content__select-id"
+            class="table-content__select-label"
+            >Record per page: {{ pagination.itemPerPage }}</label
+          >
+        </div>
+        <div class="table-content__search">
+          <label
+            for="table-content__search-input"
+            class="table-content__search-label"
+            >Search:</label
+          >
+          <input
+            type="text"
+            id="table-content__search-input"
+            class="table-content__search-input"
+            v-model="searchItem"
+            v-on:keyup="searchInTheList(searchItem)"
+          />
+        </div>
+      </div>
 </template>
 
 <script>
