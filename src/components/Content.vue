@@ -229,12 +229,8 @@ export default {
     paginatedItems() {
       return this.$store.getters.getPaginatedItems
     }
-    // paginatedItems() {
-    //   return 
-    // }
   },
   created() {
-    // this.filteredItems = this.items.concat([]);
     // this.dispatch("setFilteredItems");
     this.buildPagination();
     this.selectPage(2);

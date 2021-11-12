@@ -173,25 +173,34 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    getFilteredItems: (state) => {
-      state.filteredItems = state.items
-       
+
+    setFilteredItems: (state) => {
+      return state.filteredItems = state.items
+    },
+
+    getFilteredItems: (state, getters) => {
       if(_.isUndefined(state.searchItem)){
-        state.filteredItems = _.filter(state.items, function(v) {
-          return !v.selected
+        // return state.filteredItems = _.filter(state.filteredItems, function(v) {
+        //   return !v.selected
+        // })
+        return getters.setFilteredItems.filter((v) => {
+          v.selected === false
         })
         }
       else {
-        state.filteredItems = _.filter(state.items, function(v) {
-          return (
-            !v.selected &&
-            v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
-          )
-          })
-        }
+        // return state.filteredItems = _.filter(state.filteredItems, function(v) {
+        //   return (
+        //     !v.selected &&
+        //     v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
+        //   )
+        //   })
+        return getters.setFilteredItems.filter((v) => {
+          v.selected = true && v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
+        })
+      }
     },
     getPaginatedItems: (state) => {
-      state.paginatedItems = state.filteredItems.filter((v, k) => {
+       return state.paginatedItems = state.filteredItems.filter((v, k) => {
         Math.ceil(k +1) / state.pagination.itemPerPage === state.pagination.currentPage
       })
     }
