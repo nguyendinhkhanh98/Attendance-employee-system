@@ -173,75 +173,66 @@ export default new Vuex.Store({
     },
   },
   getters: {
-
     setFilteredItems: (state) => {
       return state.filteredItems = state.items
     },
 
-    getFilteredItems: (state, getters) => {
-      if(_.isUndefined(state.searchItem)){
-        // return state.filteredItems = _.filter(state.filteredItems, function(v) {
-        //   return !v.selected
-        // })
-        return getters.setFilteredItems.filter((v) => {
-          v.selected === false
-        })
-        }
-      else {
-        // return state.filteredItems = _.filter(state.filteredItems, function(v) {
-        //   return (
-        //     !v.selected &&
-        //     v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
-        //   )
-        //   })
-        return getters.setFilteredItems.filter((v) => {
-          v.selected = true && v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
-        })
-      }
-    },
+    // getFilteredItems: (state) => {
+    //   if(state.searchItem.length === 0 ){
+    //     return state.filteredItems = _.filter(state.filteredItems, function(v) {
+    //       return !v.selected
+    //     })
+    //     return state.filteredItems = state.items.filter((v) => {
+    //       v.selected === false
+    //     })
+    //     return state.filteredItems = state.items
+    //   }
+    //   else {
+    //     return state.filteredItems = _.filter(state.filteredItems, function(v) {
+    //       return (
+    //         !v.selected &&
+    //         v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
+    //       )
+    //       })
+    //     return state.filteredItems = state.items.filter((v) => {
+    //       v.selected = true && v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
+    //     })
+    //   }
+    // },
+    // getPaginatedItems: (state, getters) => {
+    //   console.log(getters.getFilteredItems)
+    //   console.log(getters.setFilteredItems)
+    //    return state.paginatedItems = getters.setFilteredItems.filter((v, k) => {
+    //     Math.ceil((k+1) / state.pagination.itemPerPage) === state.pagination.currentPage
+    //   })
+    // },
     getPaginatedItems: (state) => {
-       return state.paginatedItems = state.filteredItems.filter((v, k) => {
-        Math.ceil(k +1) / state.pagination.itemPerPage === state.pagination.currentPage
-      })
+      return state.paginatedItems
     }
   },
   mutations: {
-    FILTERED_ITEM(state , searchText) {
-      if (_.isUndefined(searchText)) {
-        state.filteredItems = _.filter(state.items, function (v) {
-          return !v.selected;
-        });
-      } else {
-        state.filteredItems = _.filter(state.items, function (v) {
-          return (
-            !v.selected &&
-            v.employeeName.toLowerCase().indexOf(searchText.toLowerCase()) > -1
-          );
-        });
-      }
-      state.filteredItems.forEach(function (v, k) {
-        v.key = k + 1;
-      });
+    FILTERED_ITEM(state, payload) {
+      state.filteredItems = payload;
     },
     BUILD_PAGINATION(state, numberOfPage) {
       state.pagination.items = [];
       for (var i = 0; i < numberOfPage; i++) {
         state.pagination.items.push(i + 1);
       }
-    }, 
+    },
     SELECT_PAGE(state, start, end) {
       state.pagination.filteredItems = [];
       for (var i = start; i <= end; i++) {
         state.pagination.filteredItems.push(i);
       }
-      // state.paginatedItems = state.filteredItems.filter((v, k) => {
-      //   return (
-      //     Math.ceil((k + 1) / state.pagination.itemPerPage) ===
-      //     state.pagination.currentPage
-      //   );
-      // });
+      state.paginatedItems = state.filteredItems.filter((v, k) => {
+        return (
+          Math.ceil((k + 1) / state.pagination.itemPerPage) ===
+          state.pagination.currentPage
+        );
+      });
     },
-    SET_CURRENT_PAGE(state , item) {
+    SET_CURRENT_PAGE(state, item) {
       state.pagination.currentPage = item;
     },
     SET_SELECTED_ITEMS_TRUE(state, item) {
@@ -255,7 +246,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    clearSearchItem({state, dispatch}) {
+    clearSearchItem({ state, dispatch }) {
       _.isUndefined(state.searchItem);
       // this.searchInTheList("");
       dispatch("searchInTheList");
@@ -263,6 +254,7 @@ export default new Vuex.Store({
 
     searchInTheList({ state, commit, dispatch }, searchText, currentPage) {
       // if (_.isUndefined(searchText)) {
+      //   payload = state.filteredItems
       //   state.filteredItems = _.filter(state.items, function (v) {
       //     return !v.selected;
       //   });
@@ -277,7 +269,24 @@ export default new Vuex.Store({
       // state.filteredItems.forEach(function (v, k) {
       //   v.key = k + 1;
       // });
-      commit("FILTERED_ITEM", searchText)
+      let payload;
+      if (_.isUndefined(searchText)) {
+        payload = state.filteredItems = _.filter(state.items, function (v) {
+          return !v.selected;
+        })
+      }
+      else {
+        payload = _.filter(state.items, function (v) {
+          return (
+            !v.selected &&
+            v.employeeName.toLowerCase().indexOf(searchText.toLowerCase()) > -1
+          );
+        });
+        payload.forEach(function(v, k) {
+          v.key = k + 1;
+        })
+      }
+      commit("FILTERED_ITEM", payload)
       // this.buildPagination();
       dispatch("buildPagination");
 
@@ -301,7 +310,7 @@ export default new Vuex.Store({
       commit("BUILD_PAGINATION", numberOfPage)
     },
 
-    selectPage({ state, commit } , item) {
+    selectPage({ state, commit }, item) {
       commit("SET_CURRENT_PAGE", item)
 
       let start = 0;
@@ -339,13 +348,13 @@ export default new Vuex.Store({
       commit("SELECT_PAGE", start, end)
     },
 
-    setFilteredItems({commit}) {
+    setFilteredItems({ commit }) {
       commit("SET_FILTEREDITEMS")
     },
 
-    
 
-    selectItem( { state, commit, dispatch } , item) {
+
+    selectItem({ state, commit, dispatch }, item) {
       item.selected = true;
       // state.selectedItems.push(item);
       commit("SET_SELECTED_ITEMS_TRUE", item)
@@ -353,7 +362,7 @@ export default new Vuex.Store({
       dispatch("searchInTheList", state.searchItem, state.pagination.currentPage)
     },
 
-    removeSelectedItem( { state, commit, dispatch } , item) {
+    removeSelectedItem({ state, commit, dispatch }, item) {
       item.selected = false;
       // state.selectedItems.$remove(item);
       commit("SET_SELECTED_ITEMS_FALSE", item)

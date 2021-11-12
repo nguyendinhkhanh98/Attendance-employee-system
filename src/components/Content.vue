@@ -224,7 +224,7 @@ export default {
   },
   computed: {
     filteredItems() {
-      return this.$store.getters.getFilteredItems
+      return this.$store.getters.setFilteredItems
     },
     paginatedItems() {
       return this.$store.getters.getPaginatedItems
@@ -232,6 +232,7 @@ export default {
   },
   created() {
     // this.dispatch("setFilteredItems");
+    // this. filteredItems = this.items;
     this.buildPagination();
     this.selectPage(2);
   },
