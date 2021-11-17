@@ -2,21 +2,20 @@
   <header class="wrap">
     <nav class="container">
       <div class="branding">
-        <router-link class="header" :to="{}">Attendance</router-link>
+        <button v-on:click="openNavigation" class="branding-button">Attendance</button>
+        <Navigation id="navigation" v-on:close-nav="setNoneWidth"/>
       </div>
       <div class="nav-links">
-        <ul v-show="!mobile">
+        <ul v-show="!mobile" class="nav-links__menu">
           <router-link class="link" :to="{}">Home</router-link>
           <router-link class="link" :to="{}">ABC</router-link>
-          <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">ABC</router-link
+          <router-link class="link" :to="{ name: 'CreatePost' }">ABC</router-link
           >
-          <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link
+          <router-link class="link" :to="{ name: 'Login' }">Login/Register</router-link
           >
         </ul>
         <div
-          v-if="user"
           :class="{ 'mobile-user-menu': mobile }"
-          @click="toggleProfileMenu"
           class="profile"
           ref="profile"
         >
@@ -40,13 +39,13 @@
                   <p>Profile</p>
                 </router-link>
               </div>
-              <div v-if="admin" class="option">
+              <div class="option">
                 <router-link class="option" :to="{ name: 'Admin' }">
                   <adminIcon class="icon" />
                   <p>Admin</p>
                 </router-link>
               </div>
-              <div @click="signOut" class="option">
+              <div class="option">
                 <signOutIcon class="icon" />
                 <p>Sign Out</p>
               </div>
@@ -55,15 +54,15 @@
         </div>
       </div>
     </nav>
-    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" />
+    <menuIcon class="menu-icon" v-show="mobile" />
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
         <router-link class="link" :to="{ name: 'Blogs' }">ABC</router-link>
-        <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }"
+        <router-link class="link" :to="{ name: 'CreatePost' }"
           >Create Post</router-link
         >
-        <router-link v-if="!user" class="link" :to="{ name: 'Login' }"
+        <router-link class="link" :to="{ name: 'Login' }"
           >Login/Register</router-link
         >
       </ul>
@@ -76,14 +75,16 @@ import menuIcon from "../assets/Icons/bars-regular.svg";
 import userIcon from "../assets/Icons/user-alt-light.svg";
 import adminIcon from "../assets/Icons/user-crown-light.svg";
 import signOutIcon from "../assets/Icons/sign-out-alt-regular.svg";
+import Navigation from './Navigation';
 
 export default {
   name: "Header",
   components: {
+    Navigation,
     menuIcon,
     userIcon,
     adminIcon,
-    signOutIcon,
+    signOutIcon
   },
   data() {
     return {
@@ -94,7 +95,16 @@ export default {
     };
   },
   created() {},
-  methods: {},
+  methods: {
+    openNavigation() {
+      document.getElementById("navigation").style.width = "250px";
+      this.$emit('open-navigation');
+    },
+    setNoneWidth() {
+      document.getElementById("navigation").style.width = "0";
+      this.$emit('close-app-wrap')
+    }
+  },
   computed: {},
 };
 </script>
@@ -102,10 +112,25 @@ export default {
 <style scoped>
 .wrap {
   background-color: #fff;
-  padding: 0 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   z-index: 99;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.branding-button {
+  transition: all 0.5s ease;
+  cursor: pointer;
+  padding: 12px 24px;
+  background-color: #303030;
+  color: #fff;
+  border-radius: 20px;
+  border: none;
+  text-transform: uppercase;
 }
 
 .wrap .link {
@@ -130,8 +155,7 @@ export default {
 }
 
 .branding {
-  display: flex;
-  align-items: center;
+  margin: auto;
 }
 
 .header {
@@ -147,6 +171,10 @@ export default {
   flex: 1;
   align-items: center;
   justify-content: flex-end;
+}
+
+.nav-links__menu {
+  margin: 0;
 }
 
 .profile {

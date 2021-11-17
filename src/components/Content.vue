@@ -1,6 +1,9 @@
 <template>
   <div class="container__content">
-    <Navigation />
+    <div class="container__task-bar">
+      <button type="button" class="btn btn-primary task-bar__add" v-on:click="addItems">Add Employee</button>
+      <button type="button" class="btn btn-primary task-bar__detail">Employee Detail</button>
+    </div>
     <div class="container__table">
       <div class="table-content__header">
         <div class="form-group table-content__select">
@@ -8,7 +11,8 @@
             class="form-control table-content__select-page"
             id="table-content__select-id"
             name="action"
-            v-model="pagination.itemPerPage"
+            v-model="itemPerPage"
+            v-on:change="onChangePerPage"
           >
             <option
               v-for="optionItem in optionItems"
@@ -21,7 +25,7 @@
           <label
             for="table-content__select-id"
             class="table-content__select-label"
-            >Record per page: {{ pagination.itemPerPage }}</label
+            >Record per page: {{ itemPerPage }}</label
           >
         </div>
         <div class="table-content__search">
@@ -34,8 +38,8 @@
             type="text"
             id="table-content__search-input"
             class="table-content__search-input"
-            v-model="searchItem"
-            v-on:keyup="searchInTheList(searchItem)"
+            v-model="keySearch"
+            v-on:keyup="searchInTheList()"
           />
         </div>
       </div>
@@ -110,7 +114,7 @@
             </li>
             <li
               class="page-item"
-              v-for="item in this.pagination.filteredItems"
+              v-for="item in pagination.filteredItems"
               v-bind:key="item"
             >
               <a
@@ -192,73 +196,77 @@
 </template>
 
 <script>
-import Navigation from "../components/Navigation";
-// import HeaderTableContent from "../components/HeaderTableContent";
-// import FooterTableContent from "../components/FooterTableContent";
-// import $ from "jquery";
+// import Navigation from "../components/Navigation";
+// import HeaderTableContent from "../components/HeaderTableContent"
+import { mapGetters } from 'vuex'
 
-// const _ = require("lodash");
-
-// $('#dtBasicExample').mdbEditor({
-// mdbEditor: true
-// });
-// $('.dataTables_length').addClass('bs-select');
 
 export default {
   name: "Content",
   components: {
-    Navigation,
-    // HeaderTableContent,
-    // FooterTableContent,
+    // Navigation,
+    // HeaderTableContent
   },
   data() {
     return {
-      optionItems: this.$store.state.optionItems,
-      searchItem: this.$store.state.searchItem,
-      items: this.$store.state.items,
-      // filteredItems: this.$store.state.filteredItems,
-      // paginatedItems: this.$store.state.paginatedItems,
-      selectedItems: this.$store.state.selectedItems,
-      pagination: this.$store.state.pagination,
+      keySearch: "",
+      itemPerPage: 3,
     };
   },
   computed: {
-    filteredItems() {
-      return this.$store.getters.setFilteredItems
-    },
-    paginatedItems() {
-      return this.$store.getters.getPaginatedItems
-    }
+    ...mapGetters([
+      'optionItems',
+      'items',
+      'selectedItems',
+      'filteredItems',
+      'pagination',
+      'paginatedItems',
+      'payloadData'
+    ]),
   },
   created() {
-    this.dispatch("setFilteredItems");
-    // this. filteredItems = this.items;
-    this.buildPagination();
-    this.selectPage(1);
+    this.$store.dispatch("setPagination", {
+      itemPerPage: 3,
+      keySearch: "",
+      range: 5,
+      currentPage: 2,
+    })
+    this.$store.dispatch("selectPage", {
+      keySearch: "",
+      itemPerPage: 3,
+      currentPage: 1,
+      range: 5,
+    })
   },
   methods: {
-    clearSearchItem() {
-      this.$store.dispatch("clearSearchItem")
+    searchInTheList() {
+      this.$store.dispatch("searchInTheList", {
+        ...this.payloadData,
+        keySearch: this.keySearch,
+        itemPerPage: this.itemPerPage,
+        currentPage: 1,
+      })
     },
 
-    searchInTheList(searchText, currentPage) {
-      this.$store.dispatch("searchIntheList",searchText, currentPage)
-    },
-
-    buildPagination() {
-      this.$store.dispatch("buildPagination")
+    onChangePerPage() {
+      this.$store.dispatch("setPagination", {
+        ...this.payloadData,
+        itemPerPage: this.itemPerPage,
+        currentPage: 1,
+      })
     },
 
     selectPage(item) {
-      this.$store.dispatch("selectPage", item)
+      this.$store.dispatch("selectPage", {
+        ...this.payloadData,
+        currentPage: item,
+        itemPerPage: this.itemPerPage,
+        keySearch: this.keySearch,
+      })
     },
-    selectItem(item) {
-      this.$store.dispatch("selectItem",item)
-    },
-
-    removeSelectedItem(item) {
-      this.$store.dispatch("removeSelectedItem", item)
-    },
+    addItems() {
+      
+    }
   },
 };
 </script>
@@ -267,13 +275,28 @@ export default {
 /* Table */
 .container__content {
   display: flex;
-  overflow-x: auto;
+  flex-direction: column;
+  padding: 40px;
+}
+.container__task-bar {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 8px;
+}
+.task-bar__add {
+  width: 150px;
+  height: 38px;
+}
+.task-bar__detail {
+  margin-right: 20px;
+  width: 150px;
+  height: 38px;
 }
 .container__table {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 8px 16px 0 16px;
+  margin: 0;
 }
 .table__employee-detail {
   overflow-x: auto;

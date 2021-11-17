@@ -3,12 +3,13 @@ import Vuex from "vuex";
 // import axios from "axios";
 
 Vue.use(Vuex);
-const _ = require("lodash");
+// const _ = require("lodash");
 
 export default new Vuex.Store({
   state: {
     optionItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     searchItem: "",
+    keySearch: "",
     items: [
       {
         id: 1,
@@ -21,140 +22,140 @@ export default new Vuex.Store({
         selected: false,
       },
       {
-        id: 1,
+        id: 2,
         employeeName: "khanh",
         username: "khanh",
-        password: 123,
+        password: "khanh",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 3,
+        employeeName: "dung",
+        username: "dung",
+        password: "dung",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 4,
+        employeeName: "duc",
+        username: "duc",
+        password: "duc",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 5,
+        employeeName: "tuan",
+        username: "tuan",
+        password: "tuan",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 6,
+        employeeName: "chau",
+        username: "chau",
+        password: "chau",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 7,
+        employeeName: "quan",
+        username: "quan",
+        password: "quan",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 8,
+        employeeName: "cuong",
+        username: "cuong",
+        password: "cuong",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 9,
+        employeeName: "cuong",
+        username: "cuong",
+        password: "cuong",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 10,
+        employeeName: "cuong",
+        username: "cuong",
+        password: "cuong",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 11,
+        employeeName: "cuong",
+        username: "cuong",
+        password: "cuong",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 12,
+        employeeName: "cuong",
+        username: "cuong",
+        password: "cuong",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 13,
+        employeeName: "cuong",
+        username: "cuong",
+        password: "cuong",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 14,
+        employeeName: "cuong",
+        username: "cuong",
+        password: "cuong",
         inTime: null,
         outTime: null,
         salary: 100,
         selected: false,
       },
       {
-        id: 1,
-        employeeName: "khanh",
-        username: "khanh",
-        password: 123,
+        id: 15,
+        employeeName: "cuong",
+        username: "cuong",
+        password: "cuong",
         inTime: null,
         outTime: null,
         salary: 100,
@@ -165,207 +166,207 @@ export default new Vuex.Store({
     paginatedItems: [],
     selectedItems: [],
     pagination: {
-      range: 5,
-      currentPage: 2,
-      itemPerPage: 3,
       items: [],
       filteredItems: [],
     },
+    payloadData: {
+      itemPerPage: 3,
+      keySearch: "",
+      currentPage: null,
+      range: 5,
+    },
   },
   getters: {
-    setFilteredItems: (state) => {
-      return state.filteredItems = state.items
+    filteredItems: (state) => {
+      return state.filteredItems
     },
 
-    // getFilteredItems: (state) => {
-    //   if(state.searchItem.length === 0 ){
-    //     return state.filteredItems = _.filter(state.filteredItems, function(v) {
-    //       return !v.selected
-    //     })
-    //     return state.filteredItems = state.items.filter((v) => {
-    //       v.selected === false
-    //     })
-    //     return state.filteredItems = state.items
-    //   }
-    //   else {
-    //     return state.filteredItems = _.filter(state.filteredItems, function(v) {
-    //       return (
-    //         !v.selected &&
-    //         v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
-    //       )
-    //       })
-    //     return state.filteredItems = state.items.filter((v) => {
-    //       v.selected = true && v.employeeName.toLowerCase().indexOf(state.searchItem.toLowerCase()) > -1
-    //     })
-    //   }
-    // },
-    // getPaginatedItems: (state, getters) => {
-    //   console.log(getters.getFilteredItems)
-    //   console.log(getters.setFilteredItems)
-    //    return state.paginatedItems = getters.setFilteredItems.filter((v, k) => {
-    //     Math.ceil((k+1) / state.pagination.itemPerPage) === state.pagination.currentPage
-    //   })
-    // },
-    getPaginatedItems: (state) => {
+    paginatedItems: (state) => {
       return state.paginatedItems
+    },
+
+    pagination: (state) => {
+      return state.pagination
+    },
+
+    selectedItems: (state) => {
+      return state.selectedItems
+    },
+
+    items: (state) => {
+      return state.items
+    },
+
+    optionItems: (state) => {
+      return state.optionItems
+    },
+
+    payloadData: (state) => {
+      return state.payloadData
+    },
+
+    paginationData: (state) => {
+      return state.paginationData
     }
   },
   mutations: {
-    FILTERED_ITEM(state, payload) {
-      state.filteredItems = payload;
-    },
-    BUILD_PAGINATION(state, numberOfPage) {
+    SET_PAGINATION( state , payload ) {
+      state.filteredItems = state.items.filter((ele) => {
+        if(!payload) return ele;
+        if(!payload.keySearch) {
+          return ele
+        }else {
+          // co keysearch
+          return ele.employeeName.toLowerCase().includes(payload.keySearch.toLowerCase())
+        }
+      })
+      let numberOfPage = Math.ceil(
+        state.filteredItems.length / payload.itemPerPage
+      );
       state.pagination.items = [];
       for (var i = 0; i < numberOfPage; i++) {
         state.pagination.items.push(i + 1);
       }
-    },
-    SET_STATE_PAGINATION_FILTERED_ITEMS(state, payload1) {
-      state.pagination.filteredItems = payload1;
-    },
-    SET_STATE_FILTERED_ITEMS(state, payload2) {
-      state.filteredItems = payload2;
-    },
-    SET_CURRENT_PAGE(state, item) {
-      state.pagination.currentPage = item;
-    },
-    SET_SELECTED_ITEMS_TRUE(state, item) {
-      state.selectedItems.push(item)
-    },
-    SET_SELECTED_ITEMS_FALSE(state, item) {
-      state.selectedItems.push(item)
-    },
-    SET_FILTEREDITEMS(state) {
-      state.filteredItems = state.items;
-    }
-  },
-  actions: {
-    clearSearchItem({ state, dispatch }) {
-      _.isUndefined(state.searchItem);
-      // this.searchInTheList("");
-      dispatch("searchInTheList");
-    },
-
-    searchInTheList({ state, commit, dispatch }, searchText, currentPage) {
-      // if (_.isUndefined(searchText)) {
-      //   payload = state.filteredItems
-      //   state.filteredItems = _.filter(state.items, function (v) {
-      //     return !v.selected;
-      //   });
-      // } else {
-      //   state.filteredItems = _.filter(state.items, function (v) {
-      //     return (
-      //       !v.selected &&
-      //       v.employeeName.toLowerCase().indexOf(searchText.toLowerCase()) > -1
-      //     );
-      //   });
-      // }
-      // state.filteredItems.forEach(function (v, k) {
-      //   v.key = k + 1;
-      // });
-      let payload;
-      if (_.isUndefined(searchText)) {
-        payload = _.filter(state.items, function (v) {
-          return !v.selected;
-        })
+      let start = 0
+      let end = 0
+      if (payload.currentPage < payload.range - 2) {
+        start = 1
+        end = start + payload.range - 1
+      }
+      else if (payload.currentPage <= state.pagination.items.length && payload.currentPage > state.pagination.items.length - payload.range + 2) {
+        start = state.pagination.items.length - payload.range + 1
+        end = state.pagination.items.length
       }
       else {
-        payload = _.filter(state.items, function (v) {
-          return (
-            !v.selected &&
-            v.employeeName.toLowerCase().indexOf(searchText.toLowerCase()) > -1
-          );
-        });
-        payload.forEach(function(v, k) {
-          v.key = k + 1;
-        })
-      }
-      commit("FILTERED_ITEM", payload)
-      // this.buildPagination();
-      dispatch("buildPagination");
-
-      if (_.isUndefined(state.currentPage)) {
-        // this.selectPage(1);
-        dispatch("selectPage", 1)
-      } else {
-        // this.selectPage(currentPage);
-        dispatch("selectPage", currentPage)
-      }
-    },
-
-    buildPagination({ state, commit }) {
-      let numberOfPage = Math.ceil(
-        state.filteredItems.length / state.pagination.itemPerPage
-      );
-      // state.pagination.items = [];
-      // for (var i = 0; i < numberOfPage; i++) {
-      //   state.pagination.items.push(i + 1);
-      // }
-      commit("BUILD_PAGINATION", numberOfPage)
-    },
-
-    selectPage({ state, commit }, item) {
-      commit("SET_CURRENT_PAGE", item)
-
-      let start = 0;
-      let end = 0;
-      if (state.pagination.currentPage < state.pagination.range - 2) {
-        start = 1;
-        end = start + state.pagination.range - 1;
-      } else if (
-        state.pagination.currentPage <= state.pagination.items.length &&
-        state.pagination.currentPage > state.pagination.items.length - state.pagination.range + 2
-      ) {
-        start = state.pagination.items.length - state.pagination.range + 1;
-        end = state.pagination.items.length;
-      } else {
-        start = state.pagination.currentPage - 2;
-        end = state.pagination.currentPage + 2;
+        start = payload.currentPage - 2
+        end = payload.currentPage + 2
       }
       if (start < 1) {
-        start = 1;
+        start = 1
       }
       if (end > state.pagination.items.length) {
-        end = state.pagination.filteredItems.length;
+        end = state.pagination.items.length
       }
-
-      let payload1 = [];
-      for (var i = start; i <= end; i++) {
-        payload1.push(i);
+      state.pagination.filteredItems = []
+      for (var x = start; x <= end; x++) {
+        state.pagination.filteredItems.push(x);
       }
-      commit("SET_STATE_PAGINATION_FILTERED_ITEMS",payload1)
-      
-      let payload2; 
-      payload2 = state.filteredItems.filter((v, k) => {
-        return (
-          Math.ceil((k + 1) / state.pagination.itemPerPage) ===
-          state.pagination.currentPage
-        );
-      });
-      commit("SET_STATE_FILTERED_ITEMS", payload2)
+      state.paginatedItems = state.filteredItems.filter((v, k) => {
+        return Math.ceil((k + 1) / payload.itemPerPage) == payload.currentPage
+      })
     },
 
-    setFilteredItems({ commit }) {
-      commit("SET_FILTEREDITEMS")
+    SEARCH_IN_THE_LIST(state, payload) {
+      state.filteredItems = state.items.filter((ele) => {
+        if(!payload) return ele;
+        if(!payload.keySearch) {
+          return ele
+        }else {
+          // co keysearch
+          return ele.employeeName.toLowerCase().includes(payload.keySearch.toLowerCase())
+        }
+      })
+      // state.filteredItems.forEach((v, k) => {
+      //   v.id = k + 1;
+      // })
+      let numberOfPage = Math.ceil(
+        state.filteredItems.length / payload.itemPerPage
+      );
+      state.pagination.items = [];
+      for (var i = 0; i < numberOfPage; i++) {
+        state.pagination.items.push(i + 1);
+      }
+      let start = 0
+      let end = 0
+      if (payload.currentPage < payload.range - 2) {
+        start = 1
+        end = start + payload.range - 1
+      }
+      else if (payload.currentPage <= state.pagination.items.length && payload.currentPage > state.pagination.items.length - payload.range + 2) {
+        start = state.pagination.items.length - payload.range + 1
+        end = state.pagination.items.length
+      }
+      else {
+        start = payload.currentPage - 2
+        end = payload.currentPage + 2
+      }
+      if (start < 1) {
+        start = 1
+      }
+      if (end > state.pagination.items.length) {
+        end = state.pagination.items.length
+      }
+      state.pagination.filteredItems = []
+      for (var x = start; x <= end; x++) {
+        state.pagination.filteredItems.push(x);
+      }
+      state.paginatedItems = state.filteredItems.filter((v, k) => {
+        return Math.ceil((k + 1) / payload.itemPerPage) == payload.currentPage
+      })
     },
 
-
-
-    selectItem({ state, commit, dispatch }, item) {
-      item.selected = true;
-      // state.selectedItems.push(item);
-      commit("SET_SELECTED_ITEMS_TRUE", item)
-      // this.searchInTheList(this.searchItem, this.pagination.currentPage);
-      dispatch("searchInTheList", state.searchItem, state.pagination.currentPage)
+    SELECT_PAGE(state, payload) {
+      state.filteredItems = state.items.filter((ele) => {
+        if(!payload) return ele;
+        if(!payload.keySearch) {
+          return ele
+        }else {
+          // co keysearch
+          return ele.employeeName.toLowerCase().includes(payload.keySearch.toLowerCase())
+        }
+      })
+      // state.filteredItems.forEach((v, k) => {
+      //   v.id = k + 1;
+      // })
+      let numberOfPage = Math.ceil(
+        state.filteredItems.length / payload.itemPerPage
+      );
+      state.pagination.items = [];
+      for (var i = 0; i < numberOfPage; i++) {
+        state.pagination.items.push(i + 1);
+      }
+      let start = 0
+      let end = 0
+      if (payload.currentPage < payload.range - 2) {
+        start = 1
+        end = start + payload.range - 1
+      }
+      else if (payload.currentPage <= state.pagination.items.length && payload.currentPage > state.pagination.items.length - payload.range + 2) {
+        start = state.pagination.items.length - payload.range + 1
+        end = state.pagination.items.length
+      }
+      else {
+        start = payload.currentPage - 2
+        end = payload.currentPage + 2
+      }
+      if (start < 1) {
+        start = 1
+      }
+      if (end > state.pagination.items.length) {
+        end = state.pagination.items.length
+      }
+      state.pagination.filteredItems = []
+      for (var x = start; x <= end; x++) {
+        state.pagination.filteredItems.push(x);
+      }
+      state.paginatedItems = state.filteredItems.filter((v, k) => {
+        return Math.ceil((k + 1) / payload.itemPerPage) == payload.currentPage
+      })
+    },
+  },
+  actions: {
+    setPagination({ commit }, payload) {
+      commit("SET_PAGINATION", payload);
     },
 
-    removeSelectedItem({ state, commit, dispatch }, item) {
-      item.selected = false;
-      // state.selectedItems.$remove(item);
-      commit("SET_SELECTED_ITEMS_FALSE", item)
-      // this.searchInTheList(this.searchItem, this.pagination.currentPage);
-      dispatch("searchInTheList", state.searchItem, state.pagination.currentPage)
+    searchInTheList({ commit }, payload) {
+      commit("SEARCH_IN_THE_LIST", payload);
     },
+
+    selectPage({ commit }, payload) {
+      commit("SELECT_PAGE", payload)
+    },
+
   },
   modules: {
 

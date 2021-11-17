@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
-    <div class="app">
-      <Header />
+    <div class="app" id= "app-wrap">
+      <Header v-on:open-navigation="marginLeftApp" v-on:close-app-wrap="noneMarginLeftApp"/>
       <Content />
       <router-view />
       <Footer />
@@ -20,6 +20,14 @@ export default {
     Header,
     Content,
     Footer,
+  },
+  methods: {
+    marginLeftApp(){
+      document.getElementById("app-wrap").style.marginLeft = "250px";
+    },
+    noneMarginLeftApp() {
+      document.getElementById("app-wrap").style.margin = "auto";
+    }
   }
 }
 </script>
@@ -38,14 +46,10 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  max-width: 1400px;
-  margin: auto;
+  max-width: 100%;
+  transition: .5s linear;
 }
 
-.container {
-  max-width: 1440px;
-  margin: 0 auto;
-}
 
 .link {
   cursor: pointer;

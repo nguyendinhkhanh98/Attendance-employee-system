@@ -1,5 +1,6 @@
 <template>
   <div class="navbar__wrap">
+    <a class="closebtn" v-on:click="closeNav"><i class="fas fa-times"></i></a>
     <div class="nav-link">
       <i class="fa fa-fw fa-home"></i>
       <a href="#">Dashboard</a>
@@ -34,16 +35,35 @@
 <script>
 export default {
   name: "Navigation",
+  methods: {
+    closeNav() {
+      this.$emit("close-nav")
+    }
+  }
 };
 </script>
 
 <style>
 /* Style the navigation bar */
 .navbar__wrap {
-  width: 15%;
-  height: 800px;
+  width: 0;
+  max-height: 800px;
   background-color: white;
-  border: 1px solid #ccc
+  border: 1px solid #ccc;
+  height: 100%;
+  position: fixed;
+  overflow-x: hidden;
+  top: 0;
+  left: 0;
+  transition: 0.5s;
+  padding-top: 115px;
+}
+.navbar__wrap .closebtn i{
+  position: absolute;
+  top: 18px;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
 }
 .navbar__wrap .nav-link {
   display: flex;

@@ -3,9 +3,11 @@
     <form class="register">
       <p class="login-register">
         Already have an account?
-        <router-link class="router-link" :to="{ name: 'Login' }">Login</router-link>
+        <router-link class="router-link" :to="{ name: 'Login' }"
+          >Login</router-link
+        >
       </p>
-      <h2>Create Your FireBlog Account</h2>
+      <h2>Create Account</h2>
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="First Name" v-model="firstName" />
@@ -59,14 +61,61 @@ export default {
       errorMsg: "",
     };
   },
-  methods: {
-    
-  },
+  methods: {},
 };
 </script>
 
-<style>
+<style scoped>
 .register h2 {
   max-width: 350px;
+}
+.form-wrap {
+  overflow: hidden;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-self: center;
+  margin: 0 auto;
+  width: 90%;
+}
+.register {
+  padding: 0 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.form-wrap form .inputs .input input {
+  width: 100%;
+  border: none;
+  background-color: #f2f7f6;
+  padding: 4px 4px 4px 30px;
+  height: 50px;
+}
+.form-wrap form .inputs .input {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.form-wrap form .inputs .input i {
+  position: absolute;
+  left: 6px;
+}
+
+button {
+  transition: all 0.5s ease;
+  cursor: pointer;
+  margin-top: 24px;
+  padding: 12px 24px;
+  background-color: #303030;
+  color: #fff;
+  border-radius: 20px;
+  border: none;
+  text-transform: uppercase;
 }
 </style>

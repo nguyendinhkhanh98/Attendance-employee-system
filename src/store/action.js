@@ -1,0 +1,1 @@
+const SEARCH_IN_THE_LIST = 'searchIntheList';

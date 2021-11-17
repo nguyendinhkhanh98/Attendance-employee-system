@@ -7,7 +7,7 @@
           >Register</router-link
         >
       </p>
-      <h2 class="login__content">Login to FireBlogs</h2>
+      <h2 class="login__content">Login to System</h2>
       <div class="inputs">
         <div class="input">
           <input
@@ -57,7 +57,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .form-wrap {
   overflow: hidden;
   display: flex;
@@ -161,6 +161,17 @@ export default {
   height: 100%;
 }
 
+button {
+  transition: all 0.5s ease;
+  cursor: pointer;
+  margin-top: 24px;
+  padding: 12px 24px;
+  background-color: #303030;
+  color: #fff;
+  border-radius: 20px;
+  border: none;
+  text-transform: uppercase;
+}
 @media (min-width: 900px) {
   .form-wrap {
     width: 100%;

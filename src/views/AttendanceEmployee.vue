@@ -1,6 +1,9 @@
 <template>
   <div class="container__content">
-    <Navigation />
+    <div class="container__task-bar">
+      <button type="button" class="btn btn-primary task-bar__add" v-on:click="addItems">Add Employee</button>
+      <button type="button" class="btn btn-primary task-bar__detail">Employee Detail</button>
+    </div>
     <div class="container__table">
       <div class="table-content__header">
         <div class="form-group table-content__select">
@@ -42,15 +45,8 @@
       <table id="dtBasicExample" class="table table-bordered table__employee-detail">
         <thead>
           <tr>
-            <th scope="col" class="table-item">ID</th>
             <th scope="col" class="table-item">
-              Employee Name <i class="fas fa-sort"></i>
-            </th>
-            <th scope="col" class="table-item">
-              Use Name <i class="fas fa-sort"></i>
-            </th>
-            <th scope="col" class="table-item">
-              Password <i class="fas fa-sort"></i>
+              Date <i class="fas fa-sort"></i>
             </th>
             <th scope="col" class="table-item">
               In Time <i class="fas fa-sort"></i>
@@ -59,33 +55,16 @@
               Out Time <i class="fas fa-sort"></i>
             </th>
             <th scope="col" class="table-item">
-              Salary <i class="fas fa-sort"></i>
-            </th>
-            <th scope="col" class="table-item"></th>
-            <th scope="col" class="table-item"></th>
-            <th scope="col" class="table-item">
-              Add in Previous Employee <i class="fas fa-sort"></i>
+              Administrator Remarks <i class="fas fa-sort"></i>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item, index) in paginatedItems" v-bind:key="index">
-            <th scope="row">{{ item.id }}</th>
-            <td>{{ item.employeeName }}</td>
-            <td>{{ item.username }}</td>
-            <td>{{ item.password }}</td>
+            <th scope="row">{{ item.date }}</th>
             <td>{{ item.inTime }}</td>
             <td>{{ item.outTime }}</td>
-            <td>{{ item.salary }}</td>
-            <td>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFormEdit">Edit</button>
-            </td>
-            <td>
-              <button type="button" class="btn btn-danger">Delete</button>
-            </td>
-            <td>
-              <button type="button" class="btn btn-warning">Previous</button>
-            </td>
+            <td></td>
           </tr>
         </tbody>
       </table>
@@ -192,68 +171,77 @@
 </template>
 
 <script>
-import Navigation from "../components/Navigation";
-// import HeaderTableContent from "../components/HeaderTableContent";
-// import FooterTableContent from "../components/FooterTableContent";
-// import $ from "jquery";
+// import Navigation from "../components/Navigation";
+// import HeaderTableContent from "../components/HeaderTableContent"
+import { mapGetters } from 'vuex'
 
-// const _ = require("lodash");
-
-// $('#dtBasicExample').mdbEditor({
-// mdbEditor: true
-// });
-// $('.dataTables_length').addClass('bs-select');
 
 export default {
   name: "Content",
   components: {
-    Navigation,
-    // HeaderTableContent,
-    // FooterTableContent,
+    // Navigation,
+    // HeaderTableContent
   },
   data() {
     return {
-      optionItems: this.$store.state.optionItems,
-      searchItem: this.$store.state.searchItem,
-      items: this.$store.state.items,
-      filteredItems: this.$store.state.filteredItems,
-      paginatedItems: this.$store.state.paginatedItems,
-      selectedItems: this.$store.state.selectedItems,
-      pagination: this.$store.state.pagination,
+      keySearch: "",
+      itemPerPage: 3,
     };
   },
   computed: {
-    
+    ...mapGetters([
+      'optionItems',
+      'items',
+      'selectedItems',
+      'filteredItems',
+      'pagination',
+      'paginatedItems',
+      'payloadData'
+    ]),
   },
   created() {
-    // this.filteredItems = this.items.concat([]);
-    this.commit("SET_FILTERED_ITEMS");
-    this.buildPagination();
-    this.selectPage(2);
+    this.$store.dispatch("setPagination", {
+      itemPerPage: 3,
+      keySearch: "",
+      range: 5,
+      currentPage: 2,
+    })
+    this.$store.dispatch("selectPage", {
+      keySearch: "",
+      itemPerPage: 3,
+      currentPage: 1,
+      range: 5,
+    })
   },
   methods: {
-    clearSearchItem() {
-      this.$store.dispatch("clearSearchItem")
+    searchInTheList() {
+      this.$store.dispatch("searchInTheList", {
+        ...this.payloadData,
+        keySearch: this.keySearch,
+        itemPerPage: this.itemPerPage,
+        currentPage: 1,
+      })
     },
 
-    searchInTheList(searchText, currentPage) {
-      this.$store.dispatch("searchIntheList",searchText, currentPage)
-    },
-
-    buildPagination() {
-      this.$store.dispatch("buildPagination")
+    onChangePerPage() {
+      this.$store.dispatch("setPagination", {
+        ...this.payloadData,
+        itemPerPage: this.itemPerPage,
+        currentPage: 1,
+      })
     },
 
     selectPage(item) {
-      this.$store.dispatch("selectPage", item)
+      this.$store.dispatch("selectPage", {
+        ...this.payloadData,
+        currentPage: item,
+        itemPerPage: this.itemPerPage,
+        keySearch: this.keySearch,
+      })
     },
-    selectItem(item) {
-      this.$store.dispatch("selectItem",item)
-    },
-
-    removeSelectedItem(item) {
-      this.$store.dispatch("removeSelectedItem", item)
-    },
+    addItems() {
+      
+    }
   },
 };
 </script>
@@ -262,13 +250,28 @@ export default {
 /* Table */
 .container__content {
   display: flex;
-  overflow-x: auto;
+  flex-direction: column;
+  padding: 40px;
+}
+.container__task-bar {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 8px;
+}
+.task-bar__add {
+  width: 150px;
+  height: 38px;
+}
+.task-bar__detail {
+  margin-right: 20px;
+  width: 150px;
+  height: 38px;
 }
 .container__table {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 8px 16px 0 16px;
+  margin: 0;
 }
 .table__employee-detail {
   overflow-x: auto;
